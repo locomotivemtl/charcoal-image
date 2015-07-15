@@ -100,7 +100,7 @@
 
 <div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">\Charcoal\Image\ImageFactory</span>;</span>
 <span class="pl-s1"></span>
-<span class="pl-s1"><span class="pl-smi">$img</span> <span class="pl-k">=</span> <span class="pl-c1">ImageFactory</span><span class="pl-k">::</span>instance()<span class="pl-k">-&gt;</span>get(<span class="pl-s"><span class="pl-pds">'</span>imagick<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"><span class="pl-smi">$img</span> <span class="pl-k">=</span> <span class="pl-c1">ImageFactory</span><span class="pl-k">::</span>instance()<span class="pl-k">-&gt;</span>get(<span class="pl-s"><span class="pl-pds">'</span>imagemagick<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1"><span class="pl-smi">$img</span><span class="pl-k">-&gt;</span>open(<span class="pl-s"><span class="pl-pds">'</span>example.png<span class="pl-pds">'</span></span>)</span>
 <span class="pl-s1">  <span class="pl-k">-&gt;</span>resize([</span>
 <span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>mode<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-s"><span class="pl-pds">'</span>best_fit<span class="pl-pds">'</span></span>,</span>
@@ -114,6 +114,47 @@
 <span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>luminance<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">50</span></span>
 <span class="pl-s1">  ])</span>
 <span class="pl-s1">  <span class="pl-k">-&gt;</span>save(<span class="pl-s"><span class="pl-pds">'</span>modified-target.png<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<h1>
+<a id="available-image-drivers" class="anchor" href="#available-image-drivers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Available image drivers</h1>
+
+<p>There are currently only 2 available drivers:</p>
+
+<ul>
+<li>
+<code>imagick</code>
+
+<ul>
+<li>The imagick driver use the <code>Imagick</code> PHP extension, which is build on top of imagemagick.</li>
+</ul>
+</li>
+<li>
+<code>imagemagick</code>
+
+<ul>
+<li>The imagemagick driver uses the imagmagick binaries directly, running the operations in a separate shell process instead of directely within PHP.</li>
+<li>The commands <code>convert</code>, <code>mogrify</code> and <code>identify</code> should be installed on the system and reachable from the PHP process.</li>
+</ul>
+</li>
+</ul>
+
+<h2>
+<a id="how-to-select-a-driver" class="anchor" href="#how-to-select-a-driver" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to select a driver</h2>
+
+<p>There are two different ways to instantiate an <em>Image</em> object for a specific driver.</p>
+
+<p>Directly:</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-smi">$img</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Charcoal\Image\Imagick\</span><span class="pl-c1">ImagickImage</span>();</span>
+<span class="pl-s1"><span class="pl-c">// or</span></span>
+<span class="pl-s1"><span class="pl-smi">$img</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Charcoal\Image\Imagemagick\</span><span class="pl-c1">ImagemagickImage</span>();</span></pre></div>
+
+<p>With <code>ImageFactory</code>:</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">\Charcoal\Image\ImageFactory</span>;</span>
+<span class="pl-s1"><span class="pl-smi">$img</span> <span class="pl-k">=</span> <span class="pl-c1">ImageFactory</span><span class="pl-k">::</span>instance()<span class="pl-k">-&gt;</span>get(<span class="pl-s"><span class="pl-pds">'</span>imagick<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"><span class="pl-c">// or</span></span>
+<span class="pl-s1"><span class="pl-smi">$img</span> <span class="pl-k">=</span> <span class="pl-c1">ImageFactory</span><span class="pl-k">::</span>instance()<span class="pl-k">-&gt;</span>get(<span class="pl-s"><span class="pl-pds">'</span>imagemagick<span class="pl-pds">'</span></span>);</span></pre></div>
 
 <h1>
 <a id="available-effects--operations" class="anchor" href="#available-effects--operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Available effects / operations</h1>
@@ -232,10 +273,13 @@
 
 <ul>
 <li>Blend the blur with the original image.</li>
-<li>Unsupported for now. </li>
 </ul>
 </li>
 </ul>
+
+<blockquote>
+<p><g-emoji alias="point_right" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f449.png">👉</g-emoji> The <code>soft</code> mode is currently only available with the <code>imagemagick</code> driver.</p>
+</blockquote>
 
 <h2>
 <a id="dither-effect" class="anchor" href="#dither-effect" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dither Effect</h2>
@@ -254,6 +298,10 @@
 </ul>
 </li>
 </ul>
+
+<blockquote>
+<p><g-emoji alias="point_right" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f449.png">👉</g-emoji> The <code>dither</code> effect is currently only available with the <code>imagick</code> driver.</p>
+</blockquote>
 
 <h2>
 <a id="grayscale-effect" class="anchor" href="#grayscale-effect" aria-hidden="true"><span class="octicon octicon-link"></span></a>Grayscale Effect</h2>
@@ -287,6 +335,10 @@
 <li>
 <code>y</code> (<em>integer</em>)</li>
 </ul>
+
+<blockquote>
+<p><g-emoji alias="point_right" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f449.png">👉</g-emoji> The <code>mask</code> effect is currently not supported by any driver.</p>
+</blockquote>
 
 <h2>
 <a id="mirror-effect" class="anchor" href="#mirror-effect" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mirror Effect</h2>
@@ -670,6 +722,10 @@
 <code>y</code> (<em>integer</em>)</li>
 </ul>
 
+<blockquote>
+<p><g-emoji alias="point_right" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f449.png">👉</g-emoji> The <code>watermark</code> effect is currently only available with the <code>imagick</code> driver.</p>
+</blockquote>
+
 <h2>
 <a id="future-effects" class="anchor" href="#future-effects" aria-hidden="true"><span class="octicon octicon-link"></span></a>Future Effects</h2>
 
@@ -780,7 +836,6 @@
 
 <ul>
 <li>Write a version for GD</li>
-<li>Write a version using the binary imagemagick tools directly ('mogrify')</li>
 <li>Custom Exceptions</li>
 </ul>
 
