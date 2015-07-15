@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Charcoal-image by locomotivemtl</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Charcoal-image</h1>
+      <h2 class="project-tagline">Image manipulation library for PHP</h2>
+      <a href="https://github.com/locomotivemtl/charcoal-image" class="btn">View on GitHub</a>
+      <a href="https://github.com/locomotivemtl/charcoal-image/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/locomotivemtl/charcoal-image/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="charcoal-image" class="anchor" href="#charcoal-image" aria-hidden="true"><span class="octicon octicon-link"></span></a>Charcoal Image</h1>
+
+<p>Charcoal Image is a PHP image manipulation and processing library, currently built on top of <code>imagick</code>. </p>
+
+<h2>
+<a id="how-to-install" class="anchor" href="#how-to-install" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to install</h2>
+
+<p>The preferred way of installing this module is with <code>composer</code>. Using composer, an autoloader is provided automatically with <code>PSR-4</code> so there is no further requirement.</p>
+
+<div class="highlight highlight-shell"><pre>$ composer require locomotivemtl/charcoal-image</pre></div>
+
+<h2>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<ul>
+<li><code>PHP 5.4+</code></li>
+<li>
+<code>ext-imagick</code>
+
+<ul>
+<li> The <code>imagick</code> driver is the only available one at this time, and therefore is required as a hard dependency for now.</li>
+</ul>
+</li>
+</ul>
+
+<blockquote>
+<p><g-emoji alias="point_right" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f449.png">👉</g-emoji> Although this module was developped for <code>Charcoal</code>, there is absolutely no dependencies on any Charcoal modules and can therefore be used in any PHP project.</p>
+</blockquote>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="with-set_data" class="anchor" href="#with-set_data" aria-hidden="true"><span class="octicon octicon-link"></span></a>With <code>set_data()</code>
+</h3>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-smi">$img</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Charcoal\Image\Imagick\</span><span class="pl-c1">ImagickImage</span>();</span>
+<span class="pl-s1"><span class="pl-smi">$img</span><span class="pl-k">-&gt;</span>set_data([</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>source<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-s"><span class="pl-pds">'</span>example.png<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>target<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-s"><span class="pl-pds">'</span>example-modified.png<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>effects<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span>[</span>
+<span class="pl-s1">        [</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-s"><span class="pl-pds">'</span>resize<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>width<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">600</span></span>
+<span class="pl-s1">        ],</span>
+<span class="pl-s1">        [</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>type<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-s"><span class="pl-pds">'</span>blur<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>mode<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-s"><span class="pl-pds">'</span>gaussian<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>sigma<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">15</span></span>
+<span class="pl-s1">        ]</span>
+<span class="pl-s1">    ]</span>
+<span class="pl-s1">]);</span>
+<span class="pl-s1"><span class="pl-smi">$img</span><span class="pl-k">-&gt;</span>process();</span>
+<span class="pl-s1"><span class="pl-smi">$img</span><span class="pl-k">-&gt;</span>save();</span></pre></div>
+
+<h3>
+<a id="with-magic-__call-methods" class="anchor" href="#with-magic-__call-methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>With magic (<code>__call()</code>) methods</h3>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">\Charcoal\Image\Imagick\ImagickImage</span> <span class="pl-k">as</span> <span class="pl-c1">Image</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-smi">$img</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">Image</span>();</span>
+<span class="pl-s1"><span class="pl-smi">$img</span><span class="pl-k">-&gt;</span>open(<span class="pl-s"><span class="pl-pds">'</span>example.png<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"><span class="pl-smi">$img</span><span class="pl-k">-&gt;</span>resize([</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>width<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">600</span></span>
+<span class="pl-s1">]);</span>
+<span class="pl-s1"><span class="pl-smi">$img</span><span class="pl-k">-&gt;</span>blur([</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>mode<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-s"><span class="pl-pds">'</span>gaussian<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>sigma<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">15</span></span>
+<span class="pl-s1">]);</span>
+<span class="pl-s1"><span class="pl-smi">$img</span><span class="pl-k">-&gt;</span>save();</span></pre></div>
+
+<h4>
+<a id="chainable-version" class="anchor" href="#chainable-version" aria-hidden="true"><span class="octicon octicon-link"></span></a>Chainable version</h4>
+
+<p>Also shown: using the <code>ImageFactory</code> constructor method:</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">\Charcoal\Image\ImageFactory</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-smi">$img</span> <span class="pl-k">=</span> <span class="pl-c1">ImageFactory</span><span class="pl-k">::</span>instance()<span class="pl-k">-&gt;</span>get(<span class="pl-s"><span class="pl-pds">'</span>imagick<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"><span class="pl-smi">$img</span><span class="pl-k">-&gt;</span>open(<span class="pl-s"><span class="pl-pds">'</span>example.png<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>resize([</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>mode<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-s"><span class="pl-pds">'</span>best_fit<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>width<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">350</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>height<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">350</span></span>
+<span class="pl-s1">  ])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>rotate([</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>angle<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">90</span></span>
+<span class="pl-s1">  ])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>modulate([</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>luminance<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">50</span></span>
+<span class="pl-s1">  ])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>save(<span class="pl-s"><span class="pl-pds">'</span>modified-target.png<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<h2>
+<a id="available-effects--operations" class="anchor" href="#available-effects--operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Available effects / operations</h2>
+
+<p>Any image operation is called an "effect" and implements the <code>\Charcoal\Image\EffectInterface</code> interface.</p>
+
+<p>The available effects are:</p>
+
+<ul>
+<li>Blur</li>
+<li>Dither</li>
+<li>Grayscale</li>
+<li>Mask</li>
+<li>Mirror</li>
+<li>Modulate</li>
+<li>Resize</li>
+<li>Revert</li>
+<li>Rotate</li>
+<li>Sepia</li>
+<li>Sharpen</li>
+<li>Threshold</li>
+<li>Tint</li>
+<li>Watermark</li>
+</ul>
+
+<h3>
+<a id="blur-effect" class="anchor" href="#blur-effect" aria-hidden="true"><span class="octicon octicon-link"></span></a>Blur Effect</h3>
+
+<p><strong>Blurs an image</strong></p>
+
+<h4>
+<a id="options" class="anchor" href="#options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>mode</code> (<em>string</em>)
+
+<ul>
+<li>The type of blur to apply. Possible valures are: <code>standard</code>, <code>adaptive</code>, gaussian<code>,</code>motion<code>,</code>radial<code>,</code>soft` (Currently unsupported)</li>
+</ul>
+</li>
+<li>
+<code>radius</code> (<em>float</em>)
+
+<ul>
+<li>Defines the extent or size of the filter (technically, the size of the array which hold the calculated Gaussian distribution).</li>
+<li>If 0, a default optimal radius will be auto-determined.</li>
+<li>Bigger radius results in slower effect.</li>
+<li>Default is <code>0</code>.</li>
+</ul>
+</li>
+<li>
+<p><code>sigma</code> (<em>float</em>)</p>
+
+<ul>
+<li>Determines the actual amount of blurring that will take place.</li>
+<li>Default is <code>1</code>.</li>
+</ul>
+</li>
+<li><p><code>channel</code> (<em>int</em>)</p></li>
+<li>
+<code>angle</code> (<em>float</em>)
+
+<ul>
+<li>The angle of the blur. Only used in <code>motion</code> or <code>radial</code> mode.</li>
+</ul>
+
+<h2>
+<a id="--default-is-0" class="anchor" href="#--default-is-0" aria-hidden="true"><span class="octicon octicon-link"></span></a>- Default is <code>0</code>.</h2>
+</li>
+</ul>
+
+<h4>
+<a id="modes" class="anchor" href="#modes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modes</h4>
+
+<ul>
+<li><code>standard</code></li>
+<li><code>adaptive</code></li>
+<li><code>gaussian</code></li>
+<li><code>motion</code></li>
+<li><code>radial</code></li>
+<li><code>soft</code></li>
+</ul>
+
+<h3>
+<a id="dither-effect" class="anchor" href="#dither-effect" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dither Effect</h3>
+
+<p><strong>Reduces an image's colors to a certain number, using dithering.</strong></p>
+
+<h4>
+<a id="options-1" class="anchor" href="#options-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>colors</code> (<em>int</em>)
+
+<ul>
+<li>The number of colors to reduce to</li>
+</ul>
+</li>
+</ul>
+
+<h3>
+<a id="grayscale-effect" class="anchor" href="#grayscale-effect" aria-hidden="true"><span class="octicon octicon-link"></span></a>Grayscale Effect</h3>
+
+<p><strong>Converts an image's colors to a 256-colors greyscale. There are no options.</strong></p>
+
+<h4>
+<a id="options-2" class="anchor" href="#options-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li><em>none</em></li>
+</ul>
+
+<h3>
+<a id="mask-effect" class="anchor" href="#mask-effect" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mask Effect</h3>
+
+<p><strong>Apply a 8-bit transparency mask to the image.</strong></p>
+
+<h4>
+<a id="options-3" class="anchor" href="#options-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>mask</code> (<em>string</em>)</li>
+<li>
+<code>opacity</code> (<em>float</em>)</li>
+<li>
+<code>gravity</code> (<em>string</em>)</li>
+<li>
+<code>x</code> (<em>integer</em>)</li>
+<li>
+<code>y</code> (<em>integer</em>)</li>
+</ul>
+
+<h3>
+<a id="mirror-effect" class="anchor" href="#mirror-effect" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mirror Effect</h3>
+
+<p><strong>Flip an image horizontally or vertically.</strong></p>
+
+<h4>
+<a id="options-4" class="anchor" href="#options-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>axis</code> (<em>string</em>)
+
+<ul>
+<li>The axis can be "x" (flip) or "y" (flop). </li>
+<li>Default is "y".</li>
+</ul>
+</li>
+</ul>
+
+<h3>
+<a id="modulate-effect" class="anchor" href="#modulate-effect" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modulate Effect</h3>
+
+<p><strong>Modifies an image's colors in the special HSL (hue-saturation-luminance) colorspace.</strong></p>
+
+<h4>
+<a id="options-5" class="anchor" href="#options-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>hue</code> (<em>float</em>)
+
+<ul>
+<li>The <strong>color tint</strong> value, between -100 and 100.</li>
+<li>Default is <code>0</code> (no effect)</li>
+</ul>
+</li>
+<li>
+<code>saturation</code> (<em>float</em>)
+
+<ul>
+<li>The <strong>color intensity</strong> value, between -100 and 100.</li>
+<li>Default is <code>0</code> (no effect)</li>
+</ul>
+</li>
+<li>
+<code>luminance</code> (<em>float</em>)
+
+<ul>
+<li>The <strong>brightness</strong> value, between -100 and 100.</li>
+<li>Default is <code>0</code> (no effect)</li>
+</ul>
+</li>
+</ul>
+
+<h3>
+<a id="resize-effect" class="anchor" href="#resize-effect" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resize Effect</h3>
+
+<p><strong>Resize an image to given dimensions.</strong></p>
+
+<h4>
+<a id="options-6" class="anchor" href="#options-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>mode</code> (<em>string</em>)
+
+<ul>
+<li>The type of resize operation to perform </li>
+<li>Valid modes are: <code>auto</code>, <code>exact</code>, <code>width</code>, <code>height</code>, <code>best_fit</code>, <code>crop</code>, <code>fill</code> or <code>none</code>.</li>
+<li>Default is <code>auto</code>.</li>
+</ul>
+</li>
+<li>
+<code>width</code> (<em>integer</em>)
+
+<ul>
+<li>The target's width, in pixels.</li>
+<li>Mandatory in <code>width</code>, <code>exact</code>, <code>best_fit</code>, <code>crop</code> and <code>fill</code> modes</li>
+<li>Default is <code>0</code>.</li>
+</ul>
+</li>
+<li>
+<code>height</code> (<em>integer</em>)
+
+<ul>
+<li>The target's height, in pixels.</li>
+<li>Mandatory in <code>height</code>, <code>exact</code>, <code>best_fit</code>, <code>crop</code> and <code>fill</code> modes</li>
+<li>Default is <code>0</code>.</li>
+</ul>
+</li>
+<li>
+<code>gravity</code>
+
+<ul>
+<li>The gravity, only used in <code>crop</code> mode.</li>
+<li>Defaults to <code>center</code>
+</li>
+</ul>
+</li>
+<li>
+<code>background_color</code> (<em>string</em>)
+
+<ul>
+<li>The background color, only used in <code>fill</code> mode.</li>
+<li>Can be specified as hexadecimal ("#FF00FF"), RGB values ("rgb(255,0,255)") or color name ("red").</li>
+<li>Default is <em>transparent-white</em> (<code>rgb(100%, 100%, 100%, 0)</code>)</li>
+</ul>
+</li>
+<li><code>adaptive</code></li>
+</ul>
+
+<h4>
+<a id="resize-modes" class="anchor" href="#resize-modes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resize Modes</h4>
+
+<ul>
+<li><code>auto</code></li>
+<li><code>exact</code></li>
+<li><code>width</code></li>
+<li><code>height</code></li>
+<li><code>best_fit</code></li>
+<li><code>crop</code></li>
+<li><code>fill</code></li>
+<li><code>none</code></li>
+</ul>
+
+<h3>
+<a id="revert" class="anchor" href="#revert" aria-hidden="true"><span class="octicon octicon-link"></span></a>Revert</h3>
+
+<p><strong>Revert (negate) the image's colors.</strong></p>
+
+<h4>
+<a id="options-7" class="anchor" href="#options-7" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>channel</code> (<em>string</em>)</li>
+</ul>
+
+<h3>
+<a id="rotate" class="anchor" href="#rotate" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rotate</h3>
+
+<p><strong>Rotate the image by a certain angle.</strong></p>
+
+<h4>
+<a id="options-8" class="anchor" href="#options-8" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>angle</code> (<em>float</em>)
+
+<ul>
+<li>The angle of rotation, in degrees (clockwise).</li>
+<li>Note that the dimension of the image can be modified if it is not square or if the angle is not a multiple of 90 degrees.</li>
+<li>Distortion will occur for any angle other than multiple of 90 degrees.</li>
+<li>Default to 0. (No rotation)</li>
+</ul>
+</li>
+<li>
+<code>background_color</code> (<em>string</em>)
+
+<ul>
+<li>The background color of the canvas.</li>
+<li>Only used if the angle is not a multiple of <em>90</em>.</li>
+<li>Can be specified as hexadecimal ("#FF00FF"), RGB values ("rgb(255,0,255)") or color name ("red").</li>
+<li>Default is <em>transparent-white</em> (<code>rgb(100%, 100%, 100%, 0)</code>)</li>
+</ul>
+</li>
+</ul>
+
+<h3>
+<a id="sepia" class="anchor" href="#sepia" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sepia</h3>
+
+<p><strong>Tint the image with a vintage, sepia look</strong></p>
+
+<h4>
+<a id="options-9" class="anchor" href="#options-9" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>threshold</code> (<em>float</em>)
+
+<ul>
+<li>The level of the sepia tone effect.</li>
+<li>Default is <code>75</code>.</li>
+</ul>
+</li>
+</ul>
+
+<h3>
+<a id="sharpen" class="anchor" href="#sharpen" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sharpen</h3>
+
+<p><strong>Sharpen an image, with a simple sharpen algorithm or unsharp mask options.</strong></p>
+
+<h4>
+<a id="options-10" class="anchor" href="#options-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li><code>mode</code></li>
+<li><code>radius</code></li>
+<li><code>sigma</code></li>
+<li><code>amount</code></li>
+<li><code>threshold</code></li>
+<li><code>channel</code></li>
+</ul>
+
+<h3>
+<a id="threshold" class="anchor" href="#threshold" aria-hidden="true"><span class="octicon octicon-link"></span></a>Threshold</h3>
+
+<p><strong>Convert the image to monochrome (black and white).</strong></p>
+
+<h4>
+<a id="options-11" class="anchor" href="#options-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>threshold</code> (<em>float</em>)</li>
+</ul>
+
+<h3>
+<a id="tint" class="anchor" href="#tint" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tint</h3>
+
+<p><strong>Tint (or colorize) an image with a certain color.</strong></p>
+
+<h4>
+<a id="options-12" class="anchor" href="#options-12" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>color</code> (<em>string</em>)
+
+<ul>
+<li>Color to blend unto the image.</li>
+<li>Can be specified as hexadecimal ("#FF00FF"), RGB values ("rgb(255,0,255)") or color name ("red").</li>
+<li>Default is black (<code>rgb(0,0,0)</code>).</li>
+</ul>
+</li>
+<li>
+<code>opacity</code> (<em>float</em>)
+
+<ul>
+<li>Percentage of the value to blend, as a float between 0.0 and 1.0</li>
+<li>Default to 50% (<code>0.5</code>).</li>
+</ul>
+</li>
+<li>
+<code>midtone</code> (<em>boolean</em>)
+
+<ul>
+<li>If true, then the color will be blended only to the midtones.</li>
+<li>Technically, true call the <em>tint</em> function while false calls the <em>colorize</em> function.</li>
+<li>Default is <code>true</code>.</li>
+</ul>
+</li>
+</ul>
+
+<h3>
+<a id="watermark" class="anchor" href="#watermark" aria-hidden="true"><span class="octicon octicon-link"></span></a>Watermark</h3>
+
+<p><strong>Composite a watermark on top of the image.</strong></p>
+
+<h4>
+<a id="options-13" class="anchor" href="#options-13" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+<ul>
+<li>
+<code>watermark</code> (<em>string</em>)</li>
+<li>
+<code>opacity</code> (<em>float</em>)</li>
+<li>
+<code>gravity</code> (<em>string</em>)</li>
+<li>
+<code>x</code> (<em>integer</em>)</li>
+<li>
+<code>y</code> (<em>integer</em>)</li>
+</ul>
+
+<h3>
+<a id="future-effects" class="anchor" href="#future-effects" aria-hidden="true"><span class="octicon octicon-link"></span></a>Future Effects</h3>
+
+<p>These effects are available in the <code>imagick</code> library and therefore could easily be added:</p>
+
+<ul>
+<li><code>Charcoal</code></li>
+<li><code>Chop</code></li>
+<li><code>Fx</code></li>
+<li><code>Emboss</code></li>
+<li><code>Blueshift</code></li>
+<li><code>Border</code></li>
+<li><code>Edge</code></li>
+<li><code>Equalize</code></li>
+<li><code>Gamma</code></li>
+<li><code>Oilpaint</code></li>
+<li><code>Posterize</code></li>
+<li><code>Reducenoise</code></li>
+<li><code>Swirl</code></li>
+<li><code>Wave</code></li>
+</ul>
+
+<h2>
+<a id="development" class="anchor" href="#development" aria-hidden="true"><span class="octicon octicon-link"></span></a>Development</h2>
+
+<h3>
+<a id="coding-style" class="anchor" href="#coding-style" aria-hidden="true"><span class="octicon octicon-link"></span></a>Coding Style</h3>
+
+<p>All Charcoal modules follow the same coding style and <code>charcoal-core</code> is no exception. For PHP:</p>
+
+<ul>
+<li>
+<a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md"><em>PSR-1</em></a>, except for
+
+<ul>
+<li>Method names MUST be declared in <code>snake_case</code>.</li>
+</ul>
+</li>
+<li><a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md"><em>PSR-2</em></a></li>
+<li>
+<a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md"><em>PSR-4</em></a>, autoloading is therefore provided by <em>Composer</em>
+</li>
+<li><a href="http://phpdoc.org/"><em>phpDocumentor</em></a></li>
+<li>Arrays should be written in short notation (<code>[]</code> instead of <code>array()</code>)</li>
+</ul>
+
+<p>Coding styles are  enforced with <code>grunt phpcs</code> (<a href="https://github.com/squizlabs/PHP_CodeSniffer"><em>PHP Code Sniffer</em></a>). The actual ruleset can be found in <code>phpcs.xml</code>.</p>
+
+<blockquote>
+<p><g-emoji alias="point_right" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f449.png">👉</g-emoji> To fix minor coding style problems, run <code>grunt phpcbf</code> (<a href="https://github.com/squizlabs/PHP_CodeSniffer"><em>PHP Code Beautifier and Fixer</em></a>). This tool uses the same ruleset as <em>phpcs</em> to automatically correct coding standard violations.</p>
+</blockquote>
+
+<p>The main PHP structure follow the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md"><em>PSR-4</em></a> standard. Autoloading is therefore provided by <em>Composer</em>.</p>
+
+<h3>
+<a id="automated-checks" class="anchor" href="#automated-checks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Automated Checks</h3>
+
+<p>Most quality checker tools can be run with <em>Grunt</em>. They are:</p>
+
+<ul>
+<li>
+<code>grunt phpunit</code>, to run the Test Suite.</li>
+<li>
+<code>grunt phpcs</code>, to ensure coding style compliance.</li>
+</ul>
+
+<p>All three tools can also be run from <code>grunt watch</code>.</p>
+
+<p>To ensure a clean code base, pre-commit git hooks should be installed on all development environments.</p>
+
+<h3>
+<a id="continuous-integration" class="anchor" href="#continuous-integration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Continuous Integration</h3>
+
+<ul>
+<li><a href="https://travis-ci.org/">Travis</a></li>
+<li><a href="https://scrutinizer-ci.com/">Scrutinizer</a></li>
+<li><a href="https://codeclimate.com/">Code Climate</a></li>
+</ul>
+
+<h3>
+<a id="unit-tests" class="anchor" href="#unit-tests" aria-hidden="true"><span class="octicon octicon-link"></span></a>Unit Tests</h3>
+
+<p>Every class, method, and function should be covered by unit tests. PHP code can be tested with <a href="https://phpunit.de/"><em>PHPUnit</em></a>.</p>
+
+<h2>
+<a id="authors" class="anchor" href="#authors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors</h2>
+
+<ul>
+<li>Mathieu Ducharme <a href="mailto:mat@locomotive.ca">mat@locomotive.ca</a>
+</li>
+</ul>
+
+<h2>
+<a id="changelog" class="anchor" href="#changelog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changelog</h2>
+
+<ul>
+<li>Unreleased.</li>
+</ul>
+
+<h2>
+<a id="todos" class="anchor" href="#todos" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODOs</h2>
+
+<ul>
+<li>Write a version for GD</li>
+<li>Write a version using the binary imagemagick tools directly ('mogrify')</li>
+<li>Custom Exceptions</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/locomotivemtl/charcoal-image">Charcoal-image</a> is maintained by <a href="https://github.com/locomotivemtl">locomotivemtl</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
+
