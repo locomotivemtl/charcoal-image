@@ -74,17 +74,7 @@ abstract class AbstractResizeEffect extends AbstractEffect
      */
     public function setMode($mode)
     {
-        $allowedModes = [
-            'auto',
-            'exact',
-            'width',
-            'height',
-            'best_fit',
-            'crop',
-            'fill',
-            'none'
-        ];
-        if (!is_string($mode) || (!in_array($mode, $allowedModes))) {
+        if (!is_string($mode) || (!in_array($mode, $this->allowedModes()))) {
             throw new InvalidArgumentException(
                 'Mode is not valid'
             );
@@ -99,6 +89,24 @@ abstract class AbstractResizeEffect extends AbstractEffect
     public function mode()
     {
         return $this->mode;
+    }
+
+    /**
+     * @return array
+     */
+    public function allowedModes()
+    {
+        return [
+            'auto',
+            'exact',
+            'width',
+            'height',
+            'best_fit',
+            'constraints',
+            'crop',
+            'fill',
+            'none'
+        ];
     }
 
     /**
@@ -346,7 +354,7 @@ abstract class AbstractResizeEffect extends AbstractEffect
      */
     public function autoMode()
     {
-        $width = $this->width();
+        $width  = $this->width();
         $height = $this->height();
 
         if ($width > 0 && $height > 0) {
@@ -365,8 +373,7 @@ abstract class AbstractResizeEffect extends AbstractEffect
     }
 
     /**
-     * @param array $data The effect data, if available.
-     * @throws Exception If the effect data is invalid for its resize mode.
+     * @param  array $data The effect data, if available.
      * @return AbstractResizeEffect Chainable
      */
     public function process(array $data = null)
@@ -386,99 +393,189 @@ abstract class AbstractResizeEffect extends AbstractEffect
             return $this;
         }
 
-        if ($mode == 'none') {
-            // Noting to do.
-            return $this;
-        }
-
-        $imageWidth  = $this->image()->width();
-        $imageHeight = $this->image()->height();
-
         switch ($mode) {
+            case 'none':
+                return $this;
+
             case 'exact':
-                if (($this->width() <= 0) || ($this->height() <= 0)) {
-                    throw new Exception(
-                        'Missing parameters to perform exact resize'
-                    );
-                }
-                if ($imageWidth != $this->width() || $imageHeight != $this->height()) {
-                    $this->doResize($this->width(), $this->height(), false);
-                }
-                break;
+                return $this->processExactMode();
 
             case 'width':
-                if ($this->width() <= 0) {
-                    throw new Exception(
-                        'Missing parameters to perform exact width resize'
-                    );
-                }
-                if ($imageWidth != $this->width()) {
-                    $this->doResize($this->width(), 0, false);
-                }
-                break;
+                return $this->processWidthMode();
 
             case 'height':
-                if ($this->height() <= 0) {
-                    throw new Exception(
-                        'Missing parameters to perform exact height resize'
-                    );
-                }
-                if ($imageHeight != $this->height()) {
-                    $this->doResize(0, $this->height(), false);
-                }
-                break;
+                return $this->processHeightMode();
 
             case 'best_fit':
-                if (($this->width() <= 0) || ($this->height() <= 0)) {
-                    throw new Exception(
-                        'Missing parameters to perform "best fit" resize'
-                    );
-                }
-                if ($imageWidth != $this->width() || $imageHeight != $this->height()) {
-                    $this->doResize($this->width(), $this->height(), true);
-                }
-                break;
+                return $this->processBestFitMode();
 
             case 'constraints':
-                $minW = $this->minWidth();
-                $minH = $this->minHeight();
-                $maxW = $this->maxWidth();
-                $maxH = $this->maxHeight();
-
-                if (array_sum([$minW, $minH, $maxW, $maxH]) == 0) {
-                    throw new Exception(
-                        'Missing parameter(s) to perform "constraints" resize'
-                    );
-                }
-
-                if (($minW && ($minW > $imageWidth)) || ($minH && ($minH > $imageHeight))) {
-                    // Must scale up, keeping ratio
-                    $this->doResize($minW, $minH, true);
-                    break;
-                }
-
-                if (($maxW && ($maxW < $imageWidth)) || ($maxH && ($maxH < $imageHeight))) {
-                    // Must scale down. keeping ratio
-                    $this->doResize($maxW, $maxH, true);
-                    break;
-                }
-                break;
+                return $this->processConstraintsMode();
 
             case 'crop':
-                throw new Exception(
-                    'Crop resize mode is not (yet) supported'
-                );
+                return $this->processCropMode();
 
             case 'fill':
-                $imgClass = get_class($this->image());
-                $canvas = new $imgClass;
-                $canvas->create($this->width(), $this->width(), $this->backgroundColor());
-                throw new Exception(
-                    'Crop resize mode is not (yet) supported'
-                );
+                return $this->processFillMode();
         }
 
         return $this;
+    }
+
+    /**
+     * @used-by self::process()
+     * @throws Exception If the effect data is invalid.
+     * @return AbstractResizeEffect Chainable
+     */
+    protected function processExactMode()
+    {
+        $imageWidth  = $this->image()->width();
+        $imageHeight = $this->image()->height();
+
+        if (($this->width() <= 0) || ($this->height() <= 0)) {
+            throw new Exception(
+                'Missing parameters to perform exact resize'
+            );
+        }
+
+        if ($imageWidth != $this->width() || $imageHeight != $this->height()) {
+            $this->doResize($this->width(), $this->height(), false);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @used-by self::process()
+     * @throws Exception If the effect data is invalid.
+     * @return AbstractResizeEffect Chainable
+     */
+    protected function processWidthMode()
+    {
+        $imageWidth = $this->image()->width();
+
+        if ($this->width() <= 0) {
+            throw new Exception(
+                'Missing parameters to perform exact width resize'
+            );
+        }
+
+        if ($imageWidth != $this->width()) {
+            $this->doResize($this->width(), 0, false);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @used-by self::process()
+     * @throws Exception If the effect data is invalid.
+     * @return AbstractResizeEffect Chainable
+     */
+    protected function processHeightMode()
+    {
+        $imageHeight = $this->image()->height();
+
+        if ($this->height() <= 0) {
+            throw new Exception(
+                'Missing parameters to perform exact height resize'
+            );
+        }
+
+        if ($imageHeight != $this->height()) {
+            $this->doResize(0, $this->height(), false);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @used-by self::process()
+     * @throws Exception If the effect data is invalid.
+     * @return AbstractResizeEffect Chainable
+     */
+    protected function processBestFitMode()
+    {
+        $imageWidth  = $this->image()->width();
+        $imageHeight = $this->image()->height();
+
+        if (($this->width() <= 0) || ($this->height() <= 0)) {
+            throw new Exception(
+                'Missing parameters to perform "best fit" resize'
+            );
+        }
+
+        if ($imageWidth != $this->width() || $imageHeight != $this->height()) {
+            $this->doResize($this->width(), $this->height(), true);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @used-by self::process()
+     * @throws Exception If the effect data is invalid.
+     * @return AbstractResizeEffect Chainable
+     */
+    protected function processConstraintsMode()
+    {
+        $imageWidth  = $this->image()->width();
+        $imageHeight = $this->image()->height();
+
+        $minW = $this->minWidth();
+        $minH = $this->minHeight();
+        $maxW = $this->maxWidth();
+        $maxH = $this->maxHeight();
+
+        if (array_sum([$minW, $minH, $maxW, $maxH]) == 0) {
+            throw new Exception(
+                'Missing parameter(s) to perform "constraints" resize'
+            );
+        }
+
+        if (($minW && ($minW > $imageWidth)) || ($minH && ($minH > $imageHeight))) {
+            // Must scale up, keeping ratio
+            $this->doResize($minW, $minH, true);
+            return $this;
+        }
+
+        if (($maxW && ($maxW < $imageWidth)) || ($maxH && ($maxH < $imageHeight))) {
+            // Must scale down. keeping ratio
+            $this->doResize($maxW, $maxH, true);
+            return $this;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @used-by self::process()
+     * @todo   Needs implementation.
+     * @throws Exception Needs implementation.
+     * @return void
+     */
+    protected function processCropMode()
+    {
+        throw new Exception(
+            'Crop resize mode is not (yet) supported'
+        );
+    }
+
+    /**
+     * @used-by self::process()
+     * @todo   Needs implementation.
+     * @throws Exception Needs implementation.
+     * @return void
+     */
+    protected function processFillMode()
+    {
+        $imgClass = get_class($this->image());
+        $canvas = new $imgClass;
+        $canvas->create($this->width(), $this->width(), $this->backgroundColor());
+
+        throw new Exception(
+            'Fill resize mode is not (yet) supported'
+        );
     }
 
     /**
