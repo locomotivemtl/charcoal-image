@@ -166,7 +166,8 @@ class ImagickImageTest extends \PHPUnit_Framework_Testcase
             // [ [ 'type' => 'resize', 'size' => '50%' ], 'imagick-resize-size-half.png' ],
             [ [ 'type' => 'resize', 'width' => 400 ], 'imagick-resize-width-400.png' ],
             [ [ 'type' => 'resize', 'height' => 1200 ], 'imagick-resize-height-1200.png' ],
-            [ [ 'type' => 'resize', 'mode' => 'best_fit', 'width' => 300, 'height' => 300 ], 'imagick-resize-bestfit-300.png' ],
+            [ [ 'type' => 'resize', 'mode' => 'best_fit', 'width' => 300, 'height' => 200 ], 'imagemagick-resize-bestfit-300-200.png' ],
+            [ [ 'type' => 'resize', 'mode' => 'best_fit', 'width' => 300, 'height' => 700 ], 'imagemagick-resize-bestfit-300-600.png' ],
             # Revert
             [ [ 'type' => 'revert' ], 'imagick-revert-default.png' ],
             [ [ 'type' => 'revert', 'channel' => 'red' ], 'imagick-revert-red.png' ],

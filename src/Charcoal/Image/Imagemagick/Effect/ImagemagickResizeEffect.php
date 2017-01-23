@@ -15,31 +15,32 @@ use \Charcoal\Image\Effect\AbstractResizeEffect;
 class ImagemagickResizeEffect extends AbstractResizeEffect
 {
     /**
-     * @param integer $width   The target width.
-     * @param integer $height  The target height.
-     * @param boolean $bestFit The "best_fit" flag.
+     * @param  integer $width   The target width.
+     * @param  integer $height  The target height.
+     * @param  boolean $bestFit The "best_fit" flag.
      * @return void
      */
     protected function doResize($width, $height, $bestFit = false)
     {
-        if ($this->adaptive()) {
-            $option = '-adaptive-resize';
-        } else {
-            $option = '-resize';
-        }
+        $option = $this->resizeOperator();
 
         $size = $this->size();
         if ($size) {
             $params = [ $option.' '.$size ];
         } else {
-            $params = [
-                '-gravity "'.$this->gravity().'"',
-                '-background "'.$this->backgroundColor().'"'
-            ];
+            if ($width === 0) {
+                $width = '';
+            }
+
+            if ($height === 0) {
+                $height = '';
+            }
 
             $size = $width.'x'.$height;
             if ($bestFit) {
                 $params[] = $option.' '.$size.'^';
+                $params[] = '-gravity "'.$this->gravity().'"';
+                $params[] = '-background "'.$this->backgroundColor().'"';
                 $params[] = '-extent '.$size;
             } else {
                 $params[] = $option.' '.$size;
@@ -47,5 +48,19 @@ class ImagemagickResizeEffect extends AbstractResizeEffect
         }
 
         $this->image()->applyCmd(implode(' ', $params));
+    }
+
+    /**
+     * Retrieve the resize operator.
+     *
+     * @return string
+     */
+    protected function resizeOperator()
+    {
+        if ($this->adaptive()) {
+            return '-adaptive-resize';
+        } else {
+            return '-resize';
+        }
     }
 }

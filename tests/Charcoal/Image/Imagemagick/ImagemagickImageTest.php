@@ -142,10 +142,11 @@ class ImagemagickImageTest extends \PHPUnit_Framework_Testcase
             [ [ 'type' => 'modulate', 'luminance' => 50 ], 'imagemagick-modulate-brightness.png' ],
             [ [ 'type' => 'modulate', 'luminance' => 20, 'hue' => -20, 'saturation' => 40 ], 'imagemagick-modulate-hsl.png' ],
             # Resize
-            [ [ 'type' => 'resize', 'size' => '50%' ], 'imagick-resize-size-half.png' ],
-            [ [ 'type' => 'resize', 'width' => 400 ], 'imagick-resize-width-400.png' ],
-            [ [ 'type' => 'resize', 'height' => 1200 ], 'imagick-resize-height-1200.png' ],
-            [ [ 'type' => 'resize', 'mode' => 'best_fit', 'width' => 300, 'height' => 300 ], 'imagick-resize-bestfit-300.png' ],
+            [ [ 'type' => 'resize', 'size' => '50%' ], 'imagemagick-resize-size-half.png' ],
+            [ [ 'type' => 'resize', 'width' => 400 ], 'imagemagick-resize-width-400.png' ],
+            [ [ 'type' => 'resize', 'height' => 1200 ], 'imagemagick-resize-height-1200.png' ],
+            [ [ 'type' => 'resize', 'mode' => 'best_fit', 'width' => 300, 'height' => 200 ], 'imagemagick-resize-bestfit-300-200.png' ],
+            [ [ 'type' => 'resize', 'mode' => 'best_fit', 'width' => 300, 'height' => 700 ], 'imagemagick-resize-bestfit-300-600.png' ],
             # Revert
             [ [ 'type' => 'revert' ], 'imagemagick-revert-default.png' ],
             [ [ 'type' => 'revert', 'channel' => 'red' ], 'imagemagick-revert-red.png' ],
