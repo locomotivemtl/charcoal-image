@@ -48,7 +48,7 @@ class ImagickBlurEffect extends AbstractBlurEffect
     {
         $angle = $this->angle();
         $channel = $this->image()->imagickChannel($this->channel());
-        $this->image()->imagick()->radialBlurImage(($angle), $channel);
+        $this->image()->imagick()->rotationalBlurImage(($angle), $channel);
         return $this;
     }
 
